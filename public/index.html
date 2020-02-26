@@ -43,6 +43,13 @@
 				loaded = true;
 			}
 		});
+
+		col = 0;
+		socket.on('update_client', function(file){
+			$("#" + col).prepend($('<img>', {src: "thumbnails/" + file}));
+			col ++;
+			if(col == 4){col = 1}
+		})
 	</script>
 	
 </body>

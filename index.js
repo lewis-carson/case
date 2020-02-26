@@ -12,6 +12,7 @@ const thumbfolder = "public/thumbnails/"
 var watcher_img = chokidar.watch(imgfolder, {ignored: /^\./, persistent: true});
 var watcher_thumb = chokidar.watch(thumbfolder, {ignored: /^\./, persistent: true});
 
+var global_socket;
 
 function generate_thumb(filepath){
 	thumb({
@@ -29,13 +30,16 @@ function delete_thumb(filepath){
 	fs.unlinkSync(thumbfolder + base + "_thumb" + ext);
 }
 
-function update_client(filepath){}
+function update_client(filepath){
+	if(global_socket){
+		var base = path.basename(filepath)
+		global_socket.emit('update_client', base);
+	}
+}
 
 function update_img(action, filepath){
-	if(action == "add" || action == "change"){
+	if(action == "add"){
 		generate_thumb(filepath)
-	} else {
-		delete_thumb(filepath)
 	}
 }
 
@@ -74,9 +78,12 @@ app.get('/thumbnails/*', function(req, res){
 	res.sendFile(__dirname + "/public/" + req.path.replace("%20", " "));
 });
 
+
+
 io.on('connection', function(socket){
 	io.on('connection', function(socket){
 		thumb_list(socket)
+		global_socket = socket;
 
 		socket.on('add_image', function(){
 			console.log('new image');
@@ -97,8 +104,7 @@ http.listen(3000, function(){
 		.on('unlink', function(ipath) {update_img("delete", ipath)})
 
 	watcher_thumb
-		.on('add', function(ipath) {update_thumb("add", ipath)})
-		.on('change', function(ipath) {update_thumb("change", ipath)})
-		.on('unlink', function(ipath) {update_thumb("delete", ipath)})
+		.on('add', function(ipath) {update_client(ipath)})
+		.on('unlink', function(ipath) {update_client(ipath)})
 
 });
