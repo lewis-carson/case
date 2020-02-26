@@ -9,8 +9,7 @@
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 	<script src="/siofu/client.js"></script>
-	<link rel="stylesheet" href="main.css">
-	<div id="wrapper"></div>
+	<div class="columns"></div>
 	<script>
 		var socket = io();
 
@@ -38,7 +37,7 @@
 				var cols = chunk(msg, 4)
 				for(var col in cols){
 					if (!$("#" + col).length){
-						$('#wrapper').prepend($('<div>', {class: 'column', id: col}));
+						$('.columns').prepend($('<div>', {class: 'column', id: col}));
 					}
 					for(var img in cols[col]){
 						if(cols[col][img] != undefined){

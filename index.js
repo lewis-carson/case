@@ -14,8 +14,6 @@ var watcher_thumb = chokidar.watch(thumbfolder, {ignored: /^\./, persistent: tru
 
 var global_socket;
 
-app.use(siofu.router)
-
 function generate_thumb(filepath){
 	thumb({
 		source: filepath,
