@@ -5,7 +5,6 @@ const fs = require('fs');
 var thumb = require('node-thumbnail').thumb;
 var path = require("path");
 var io = require('socket.io')(http);
-var siofu = require("socketio-file-upload");
 
 const imgfolder = "public/img/"
 const thumbfolder = "public/thumbnails/"
@@ -95,10 +94,7 @@ io.on('connection', function(socket){
 		socket.on('delete_image', function(){
 			console.log('new image');
 		});
-
-		var uploader = new siofu();
-		uploader.dir = "public/img/";
-		uploader.listen(socket);
+	});
 });
 
 http.listen(3000, function(){
