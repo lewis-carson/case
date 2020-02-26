@@ -4,15 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "scss": "sass --no-source-map --watch public/scss:public/css"
   },
-  "author": "",
+  "author": "lew, eti",
   "license": "ISC",
   "dependencies": {
     "chokidar": "^3.3.1",
     "express": "^4.17.1",
     "node-thumbnail": "^0.15.0",
     "socket.io": "^2.3.0",
-    "socketio-file-upload": "^0.7.0"
+    "socketio-file-upload": "^0.7.0",
+    "sass": "^1.26.1"
   }
 }
