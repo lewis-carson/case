@@ -3,48 +3,63 @@
 <head>
 	<meta charset="UTF-8">
 	<title>case</title>
-	<link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-	<div class="columns">
-		<script>
-			var socket = io();
-			var loaded = false;
+	<script src="/siofu/client.js"></script>
+	<link rel="stylesheet" href="main.css">
+	<div id="wrapper"></div>
+	<input type="file" id="siofu_input" />
+	<script>
+		var socket = io();
+		var uploader = new SocketIOFileUpload(io.connect());
+		uploader.listenOnInput(document.getElementById("siofu_input"));
 
-			function chunk(array, size) {
-				var return_array = []
-				var chunk_size = Math.floor(array.length/4)
-				var counter = 0
+		var loaded = false;
 
-				for(var i in [1, 2, 3, 4]){
-					var sub_return_array = []
-					while(counter < chunk_size + 1){
-						sub_return_array.push(array[(4*i)+counter])
-						counter ++
-					}
-					counter = 0
-					return_array.push(sub_return_array)
+		function chunk(array, size) {
+			var return_array = []
+			var chunk_size = Math.floor(array.length/4)
+			var counter = 0
+
+			for(var i in [1, 2, 3, 4]){
+				var sub_return_array = []
+				while(counter < chunk_size + 1){
+					sub_return_array.push(array[(4*i)+counter])
+					counter ++
 				}
-				return return_array
+				counter = 0
+				return_array.push(sub_return_array)
 			}
+			return return_array
+		}
 
-			socket.on('thumb_list', function(msg){
-				if(loaded == false){
-					var cols = chunk(msg, 4)
-					for(var col in cols){
-						if (!$("#" + col).length){
-							$('body').prepend($('<div>', {class: 'column', id: col}));
-						}
-						for(var img in cols[col]){
+		socket.on('thumb_list', function(msg){
+			if(loaded == false){
+				var cols = chunk(msg, 4)
+				for(var col in cols){
+					if (!$("#" + col).length){
+						$('#wrapper').prepend($('<div>', {class: 'column', id: col}));
+					}
+					for(var img in cols[col]){
+						if(cols[col][img] != undefined){
 							$("#" + col).prepend($('<img>', {src: "thumbnails/" + cols[col][img]}));
 						}
 					}
-					loaded = true;
 				}
-			});
-		</script>
-	</div>
+				loaded = true;
+			}
+		});
+
+		col = 0;
+		socket.on('update_client', function(file){
+			$("#" + col).prepend($('<img>', {src: "thumbnails/" + file}));
+			col ++;
+			if(col == 4){col = 1}
+		})
+	</script>
+	
 </body>
 </html>
