@@ -40,9 +40,6 @@ function update_img(action, filepath){
 }
 
 function update_thumb(action, filepath){
-	if(action == "change"){
-		generate_thumb(filepath)
-	}
 	update_client(filepath)
 }
 

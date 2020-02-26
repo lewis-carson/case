@@ -13,12 +13,20 @@
 		var loaded = false;
 
 		function chunk(array, size) {
-			if (!array) return [];
-			const firstChunk = array.slice(0, size); // create the first chunk of the given array
-			if (!firstChunk.length) {
-				return array; // this is the base case to terminal the recursive
+			var return_array = []
+			var chunk_size = Math.floor(array.length/4)
+			var counter = 0
+
+			for(var i in [1, 2, 3, 4]){
+				var sub_return_array = []
+				while(counter < chunk_size + 1){
+					sub_return_array.push(array[(4*i)+counter])
+					counter ++
+				}
+				counter = 0
+				return_array.push(sub_return_array)
 			}
-			return [firstChunk].concat(chunk(array.slice(size, array.length), size)); 
+			return return_array
 		}
 
 		socket.on('thumb_list', function(msg){
@@ -26,7 +34,7 @@
 				var cols = chunk(msg, 4)
 				for(var col in cols){
 					if (!$("#" + col).length){
-						$('body').prepend($('<div>', {class: 'columns', id: col}));
+						$('body').prepend($('<div>', {class: 'column', id: col}));
 					}
 					for(var img in cols[col]){
 						$("#" + col).prepend($('<img>', {src: "thumbnails/" + cols[col][img]}));
