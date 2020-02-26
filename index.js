@@ -1,10 +1,10 @@
-var app = require("express")();
-var http = require("http").createServer(app);
-var chokidar = require("chokidar");
-const fs = require("fs");
-var thumb = require("node-thumbnail").thumb;
+var app = require('express')();
+var http = require('http').createServer(app);
+var chokidar = require('chokidar');
+const fs = require('fs');
+var thumb = require('node-thumbnail').thumb;
 var path = require("path");
-var io = require("socket.io")(http);
+var io = require('socket.io')(http);
 
 const imgfolder = "public/img/"
 const thumbfolder = "public/thumbnails/"
@@ -20,7 +20,7 @@ function generate_thumb(filepath){
 		destination: thumbfolder,
 		concurrency: 4
 	}, function(files, err, stdout, stderr) {
-		console.log("All done!");
+		console.log('All done!');
 	});
 }
 
@@ -33,7 +33,7 @@ function delete_thumb(filepath){
 function update_client(filepath){
 	if(global_socket){
 		var base = path.basename(filepath)
-		global_socket.emit("update_client", base);
+		global_socket.emit('update_client', base);
 	}
 }
 
@@ -53,7 +53,7 @@ function thumb_list(socket){
 		files.forEach(function(file) {
 			filelist.push(file)
 		})
-		socket.emit("thumb_list", filelist);
+		socket.emit('thumb_list', filelist);
 	})	
 }
 
@@ -66,31 +66,31 @@ function clear_thumbs(){
 }
 
 
-app.get("/", function(req, res){
-	res.sendFile(__dirname + "/public/index.html");
+app.get('/', function(req, res){
+	res.sendFile(__dirname + '/public/index.html');
 });
 
-app.get("/css/main.css", function(req, res){
-	res.sendFile(__dirname + "/public/css/main.css");
+app.get('/css/main.css', function(req, res){
+	res.sendFile(__dirname + '/public/css/main.css');
 });
 
-app.get("/thumbnails/*", function(req, res){
+app.get('/thumbnails/*', function(req, res){
 	res.sendFile(__dirname + "/public/" + req.path.replace("%20", " "));
 });
 
 
 
-io.on("connection", function(socket){
-	io.on("connection", function(socket){
+io.on('connection', function(socket){
+	io.on('connection', function(socket){
 		thumb_list(socket)
 		global_socket = socket;
 
-		socket.on("add_image", function(){
-			console.log("new image");
+		socket.on('add_image', function(){
+			console.log('new image');
 		});
 
-		socket.on("delete_image", function(){
-			console.log("new image");
+		socket.on('delete_image', function(){
+			console.log('new image');
 		});
 	});
 });
@@ -99,11 +99,12 @@ http.listen(3000, function(){
 	clear_thumbs()
 
 	watcher_img
-		.on("add", function(ipath) {update_img("add", ipath)})
-		.on("change", function(ipath) {update_img("change", ipath)})
-		.on("unlink", function(ipath) {update_img("delete", ipath)})
+		.on('add', function(ipath) {update_img("add", ipath)})
+		.on('change', function(ipath) {update_img("change", ipath)})
+		.on('unlink', function(ipath) {update_img("delete", ipath)})
 
 	watcher_thumb
-		.on("add", function(ipath) {update_client(ipath)})
-		.on("unlink", function(ipath) {update_client(ipath)})
+		.on('add', function(ipath) {update_client(ipath)})
+		.on('unlink', function(ipath) {update_client(ipath)})
+
 });
