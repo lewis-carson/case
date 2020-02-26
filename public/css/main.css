@@ -1,0 +1,31 @@
+body {
+  display: flex;
+  padding: 0 1rem;
+}
+
+.column {
+  flex: 22.5%;
+  max-width: 22.5%;
+  padding: 0 0.5rem;
+}
+
+.column img {
+  margin-top: 1rem;
+  vertical-align: middle;
+  width: 100%;
+}
+
+@media screen and (max-width: 800px) {
+  .column {
+    flex: 50%;
+    max-width: 50%;
+  }
+}
+@media screen and (max-width: 600px) {
+  .column {
+    flex: 100%;
+    max-width: 100%;
+  }
+}
+
+/*# sourceMappingURL=main.css.map */

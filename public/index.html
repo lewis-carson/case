@@ -3,47 +3,48 @@
 <head>
 	<meta charset="UTF-8">
 	<title>case</title>
+	<link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-	<link rel="stylesheet" href="main.css">
-	<script>
-		var socket = io();
-		var loaded = false;
+	<div class="columns">
+		<script>
+			var socket = io();
+			var loaded = false;
 
-		function chunk(array, size) {
-			var return_array = []
-			var chunk_size = Math.floor(array.length/4)
-			var counter = 0
+			function chunk(array, size) {
+				var return_array = []
+				var chunk_size = Math.floor(array.length/4)
+				var counter = 0
 
-			for(var i in [1, 2, 3, 4]){
-				var sub_return_array = []
-				while(counter < chunk_size + 1){
-					sub_return_array.push(array[(4*i)+counter])
-					counter ++
-				}
-				counter = 0
-				return_array.push(sub_return_array)
-			}
-			return return_array
-		}
-
-		socket.on('thumb_list', function(msg){
-			if(loaded == false){
-				var cols = chunk(msg, 4)
-				for(var col in cols){
-					if (!$("#" + col).length){
-						$('body').prepend($('<div>', {class: 'column', id: col}));
+				for(var i in [1, 2, 3, 4]){
+					var sub_return_array = []
+					while(counter < chunk_size + 1){
+						sub_return_array.push(array[(4*i)+counter])
+						counter ++
 					}
-					for(var img in cols[col]){
-						$("#" + col).prepend($('<img>', {src: "thumbnails/" + cols[col][img]}));
-					}
+					counter = 0
+					return_array.push(sub_return_array)
 				}
-				loaded = true;
+				return return_array
 			}
-		});
-	</script>
-	
+
+			socket.on('thumb_list', function(msg){
+				if(loaded == false){
+					var cols = chunk(msg, 4)
+					for(var col in cols){
+						if (!$("#" + col).length){
+							$('body').prepend($('<div>', {class: 'column', id: col}));
+						}
+						for(var img in cols[col]){
+							$("#" + col).prepend($('<img>', {src: "thumbnails/" + cols[col][img]}));
+						}
+					}
+					loaded = true;
+				}
+			});
+		</script>
+	</div>
 </body>
 </html>
