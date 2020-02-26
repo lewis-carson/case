@@ -15,17 +15,27 @@ body {
   width: 100%;
 }
 
-@media screen and (max-width: 800px) {
+.columns {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@media only screen and (max-width: 1300px) {
   .column {
-    flex: 50%;
+    flex: 100%;
+    max-width: 30%;
+  }
+}
+@media only screen and (max-width: 1000px) {
+  .column {
+    flex: 37.5%;
     max-width: 50%;
   }
 }
-@media screen and (max-width: 600px) {
+@media only screen and (max-width: 800px) {
   .column {
-    flex: 100%;
+    flex: 50%;
     max-width: 100%;
   }
 }
-
-/*# sourceMappingURL=main.css.map */
