@@ -10,11 +10,8 @@
 	<script src="/siofu/client.js"></script>
 	<link rel="stylesheet" href="main.css">
 	<div id="wrapper"></div>
-	<input type="file" id="siofu_input" />
 	<script>
 		var socket = io();
-		var uploader = new SocketIOFileUpload(io.connect());
-		uploader.listenOnInput(document.getElementById("siofu_input"));
 
 		var loaded = false;
 
