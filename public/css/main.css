@@ -3,22 +3,20 @@ body {
   padding: 0 1rem;
 }
 
-.column {
-  flex: 22.5%;
-  max-width: 22.5%;
-  padding: 0 0.5rem;
-}
-
-.column img {
-  margin-top: 1rem;
-  vertical-align: middle;
-  width: 100%;
-}
-
 .columns {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+}
+.columns .column {
+  flex: 22.5%;
+  max-width: 22.5%;
+  padding: 0 0.5rem;
+}
+.columns .column img {
+  margin-top: 1rem;
+  vertical-align: middle;
+  width: 100%;
 }
 
 @media only screen and (max-width: 1300px) {
