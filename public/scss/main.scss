@@ -3,10 +3,10 @@
 @import "sizes.scss";
 
 
+
 //// main
 body {
-    display: flex;
-    padding: 0 $rg;
+    overflow-x: hidden;
 }
 
 // create four equal columns that sits next to each other
@@ -28,6 +28,19 @@ body {
         width: 100%;
     }
 }
+
+// invisible upload form
+.upload {
+    position: absolute;
+    z-index: 999;
+
+    input {
+        opacity: 0;
+        width: 100vw;
+        height: 100vh;
+    }
+}
+
 
 
 //// responsive properties

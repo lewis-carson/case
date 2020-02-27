@@ -3,86 +3,75 @@
 <head>
 	<meta charset="UTF-8">
 	<title>case</title>
-    <link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css">
+	<link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-	<form action="/add_image" method="post" enctype="multipart/form-data">
+
+	<form id="uploadForm" class="upload" action="/add_image" method="post" enctype="multipart/form-data">
 		<input type="file" id="file" name="img" title=""/>
 	</form>
 
-	<style>
-		form{
-			position: absolute;
-		}
-
-		input[type="file"]{
-			padding: 100vh 50vw;
-			opacity: 0;
-		}
-
-		body{
-			overflow-x: hidden;
-		}
-	</style>
-
 	<div class="columns"></div>
-	<script>
-		var socket = io();
 
+	<script>
+		// variables
+		var socket = io();
 		var loaded = false;
 
+
+		// functions
 		function chunkify(a, n, balanced) {
-		    
-		    if (n < 2)
-		        return [a];
+			if (n < 2)
+				return [a];
 
-		    var len = a.length,
-		            out = [],
-		            i = 0,
-		            size;
+			var len = a.length,
+			out = [],
+			i = 0,
+			size;
 
-		    if (len % n === 0) {
-		        size = Math.floor(len / n);
-		        while (i < len) {
-		            out.push(a.slice(i, i += size));
-		        }
-		    }
+			if (len % n === 0) {
+				size = Math.floor(len / n);
+				while (i < len) {
+					out.push(a.slice(i, i += size));
+				}
+			}
 
-		    else if (balanced) {
-		        while (i < len) {
-		            size = Math.ceil((len - i) / n--);
-		            out.push(a.slice(i, i += size));
-		        }
-		    }
+			else if (balanced) {
+				while (i < len) {
+					size = Math.ceil((len - i) / n--);
+					out.push(a.slice(i, i += size));
+				}
+			}
 
-		    else {
+			else {
+				n--;
+				size = Math.floor(len / n);
+				if (len % size === 0)
+					size--;
+				while (i < size * n) {
+					out.push(a.slice(i, i += size));
+				}
+				out.push(a.slice(size * n));
 
-		        n--;
-		        size = Math.floor(len / n);
-		        if (len % size === 0)
-		            size--;
-		        while (i < size * n) {
-		            out.push(a.slice(i, i += size));
-		        }
-		        out.push(a.slice(size * n));
+			}
 
-		    }
-
-		    return out;
+			return out;
 		}
 
-		socket.on("thumb_list", function(msg){
-			if(loaded == false){
+
+		// exec
+		socket.on("thumb_list", function(msg) {
+			if (loaded == false) {
 				var cols = chunkify(msg, 4, true)
-				console.log(cols)
-				for(var col in cols){
-					if (!$("#" + col).length){
+				for (var col in cols) {
+					if (!$("#" + col).length) {
 						$(".columns").prepend($("<div>", {class: "column", id: col}));
 					}
-					for(var img in cols[col]){
-						if(cols[col][img] != undefined){
+					for (var img in cols[col]) {
+						if (cols[col][img] != undefined) {
 							$("#" + col).prepend($("<img>", {src: "thumbnails/" + cols[col][img]}));
 						}
 					}
@@ -91,15 +80,18 @@
 			}
 		});
 
-		socket.on("remove_client", function(file){
-			$('body').find('img[src$="/' + file + '"]').remove()
+		socket.on("remove_client", function(file) {
+			$("body").find('img[src$="/' + file + '"]').remove()
 		})
 
 		col = 0;
-		socket.on("update_client", function(file){
+
+		socket.on("update_client", function(file) {
 			$("#" + col).prepend($("<img>", {src: "thumbnails/" + file}));
 			col ++;
-			if(col == 4){col = 1}
+			if (col == 4) {
+				col = 1
+			}
 		})
 
 		window.reset = function(e) {
@@ -108,10 +100,35 @@
 		}
 
 		$("input").change(function() {
-
-    		$("form").submit();
-    		reset($('#file'))
+			$("form").submit();
+			reset($('#file'))
 		});
 	</script>
 </body>
 </html>
+<script>
+	var uploadForm = document.getElementById("uploadForm");
+	var hidden = false;
+
+	function hideUploadForm() {
+		$("#uploadForm").css("pointer-events", "none");
+		hidden = true;
+	}
+
+	function showUploadForm() {
+		$("#uploadForm").css("pointer-events", "all");
+		hidden = false;
+	}
+
+	uploadForm.addEventListener('contextmenu', function(e) {
+		if (hidden = false) {
+			showUploadForm();
+		} else {
+			hideUploadForm();
+		}
+	});
+
+	document.body.addEventListener('click', function(e) {
+		showUploadForm();
+	});
+</script>
