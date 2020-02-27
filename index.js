@@ -25,7 +25,9 @@ function generate_thumb(filepath){
 		skip: true,
 		ignore: true
 	}, function(files, err, stdout, stderr) {
-		console.log("[", files[0].srcPath, "] thumbnail generated")
+		if(files[0]){
+			console.log("[", files[0].srcPath, "] thumbnail generated")
+		}
 	});
 }
 
@@ -53,6 +55,7 @@ function update_img(action, filepath){
 	if(action == "add"){
 		generate_thumb(filepath)
 	}else if (action == "delete"){
+		delete_thumb(filepath)
 		remove_client(filepath)
 	}
 }
