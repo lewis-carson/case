@@ -107,28 +107,11 @@
 </body>
 </html>
 <script>
-	var uploadForm = document.getElementById("uploadForm");
-	var hidden = false;
-
-	function hideUploadForm() {
-		$("#uploadForm").css("pointer-events", "none");
-		hidden = true;
-	}
-
-	function showUploadForm() {
+	document.body.addEventListener('dragenter', function(e) {
 		$("#uploadForm").css("pointer-events", "all");
-		hidden = false;
-	}
-
-	uploadForm.addEventListener('contextmenu', function(e) {
-		if (hidden = false) {
-			showUploadForm();
-		} else {
-			hideUploadForm();
-		}
 	});
 
 	document.body.addEventListener('mouseover', function(e) {
-		showUploadForm();
+		$("#uploadForm").css("pointer-events", "none");
 	});
 </script>
