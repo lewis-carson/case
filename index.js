@@ -25,7 +25,7 @@ function generate_thumb(filepath){
 		skip: true,
 		ignore: true
 	}, function(files, err, stdout, stderr) {
-		console.log("[", filepath, "] thumbnail generated")
+		console.log("[", files[0].srcPath, "] thumbnail generated")
 	});
 }
 
