@@ -20,9 +20,12 @@ function generate_thumb(filepath){
 	thumb({
 		source: filepath,
 		destination: thumbfolder,
-		concurrency: 4
+		concurrency: 4,
+		quiet: true,
+		skip: true,
+		ignore: true
 	}, function(files, err, stdout, stderr) {
-		console.log("All done!");
+		console.log("[", filepath, "] thumbnail generated")
 	});
 }
 
@@ -116,7 +119,7 @@ io.on("connection", function(socket){
 });
 
 http.listen(3000, function(){
-	clear_thumbs()
+	//clear_thumbs()
 
 	watcher_img
 		.on("add", function(ipath) {update_img("add", ipath)})
@@ -125,5 +128,6 @@ http.listen(3000, function(){
 
 	watcher_thumb
 		.on("add", function(ipath) {update_client(ipath)})
+		.on("change", function(ipath) {update_client(ipath)})
 		.on("unlink", function(ipath) {update_client(ipath)})
 });
