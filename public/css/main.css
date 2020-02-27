@@ -20,6 +20,7 @@ body {
 }
 
 .upload {
+  pointer-events: none;
   position: absolute;
   z-index: 999;
 }
