@@ -10,11 +10,13 @@
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 
+	
+
 	<form id="uploadForm" class="upload" action="/add_image" method="post" enctype="multipart/form-data">
 		<input type="file" id="file" name="img" title=""/>
 	</form>
 
-	<div class="columns"></div>
+	<div class="columns"><h2>// case by lew & eti</h2></div>
 
 	<script>
 		// variables
@@ -72,7 +74,7 @@
 					}
 					for (var img in cols[col]) {
 						if (cols[col][img] != undefined) {
-							$("#" + col).prepend($("<img>", {src: "thumbnails/" + cols[col][img]}));
+							$("#" + col).append($("<img>", {src: "thumbnails/" + cols[col][img]}));
 						}
 					}
 				}
@@ -87,7 +89,7 @@
 		col = 0;
 
 		socket.on("update_client", function(file) {
-			$("#" + col).prepend($("<img>", {src: "thumbnails/" + file}));
+			$("#" + col).append($("<img>", {src: "thumbnails/" + file}));
 			col ++;
 			if (col == 4) {
 				col = 1
