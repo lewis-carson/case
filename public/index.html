@@ -73,17 +73,17 @@
 		    return out;
 		}
 
-		socket.on('thumb_list', function(msg){
+		socket.on("thumb_list", function(msg){
 			if(loaded == false){
 				var cols = chunkify(msg, 4, true)
 				console.log(cols)
 				for(var col in cols){
 					if (!$("#" + col).length){
-						$('.columns').prepend($('<div>', {class: 'column', id: col}));
+						$(".columns").prepend($("<div>", {class: "column", id: col}));
 					}
 					for(var img in cols[col]){
 						if(cols[col][img] != undefined){
-							$("#" + col).prepend($('<img>', {src: "thumbnails/" + cols[col][img]}));
+							$("#" + col).prepend($("<img>", {src: "thumbnails/" + cols[col][img]}));
 						}
 					}
 				}
@@ -96,8 +96,8 @@
 		})
 
 		col = 0;
-		socket.on('update_client', function(file){
-			$("#" + col).prepend($('<img>', {src: "thumbnails/" + file}));
+		socket.on("update_client", function(file){
+			$("#" + col).prepend($("<img>", {src: "thumbnails/" + file}));
 			col ++;
 			if(col == 4){col = 1}
 		})
@@ -113,6 +113,5 @@
     		reset($('#file'))
 		});
 	</script>
-	
 </body>
 </html>
