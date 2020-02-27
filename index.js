@@ -5,6 +5,8 @@ const fs = require('fs');
 var thumb = require('node-thumbnail').thumb;
 var path = require("path");
 var io = require('socket.io')(http);
+var multer  = require('multer')
+var upload = multer({ dest: 'cache/' })
 
 const imgfolder = "public/img/"
 const thumbfolder = "public/thumbnails/"
@@ -37,9 +39,18 @@ function update_client(filepath){
 	}
 }
 
+function remove_client(filepath){
+	if(global_socket){
+		var base = path.basename(filepath)
+		global_socket.emit('remove_client', base);
+	}
+}
+
 function update_img(action, filepath){
 	if(action == "add"){
 		generate_thumb(filepath)
+	}else if (action == "delete"){
+		remove_client(filepath)
 	}
 }
 
@@ -78,7 +89,16 @@ app.get('/thumbnails/*', function(req, res){
 	res.sendFile(__dirname + "/public/" + req.path.replace("%20", " "));
 });
 
+var cpUpload = upload.fields([{ name: 'img', maxCount: 100 }])
+app.post('/add_image', cpUpload, function (req, res, next) {
+	var original = req.files.img[0].originalname
+	var filename = req.files.img[0].filename
 
+	fs.rename("cache/" + filename, "public/img/" + original, function (err) {
+		if (err) throw err
+		res.redirect("back");
+	})
+})
 
 io.on('connection', function(socket){
 	io.on('connection', function(socket){
