@@ -81,7 +81,8 @@
 		});
 
 		socket.on("remove_client", function(file) {
-			$("body").find('img[src$="/' + file + '"]').remove()
+			alert("remove")
+			window.reload()
 		})
 
 		col = 0;
