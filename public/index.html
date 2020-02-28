@@ -82,12 +82,12 @@
 		location.reload();
 	})
 
-	col = 4;
+	var filehistory = []
 	socket.on("update_client", function(file) {
-		$("#" + col).prepend($("<img>", {src: "thumbnails/" + file}));
-		col --;
-		if (col == 0) {
-			col = 4
+		console.log(file)
+		if(!filehistory.includes(file)){
+			$("#3").prepend($("<img>", {src: "thumbnails/" + file}));
+			filehistory.push(file)
 		}
 	})
 </script>

@@ -60,10 +60,6 @@ function update_img(action, filepath){
 	}
 }
 
-function update_thumb(action, filepath){
-	update_client(filepath)
-}
-
 var filesglobal = []
 
 function read_files(dir){
