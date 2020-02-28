@@ -92,11 +92,7 @@
 		col = 0;
 
 		socket.on("update_client", function(file) {
-			$("#" + col).append($("<img>", {src: "thumbnails/" + file}));
-			col ++;
-			if (col == 4) {
-				col = 1
-			}
+			$("#columns").prepend($("<img>", {src: "thumbnails/" + file}));
 		})
 
 		window.reset = function(e) {
