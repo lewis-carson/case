@@ -104,12 +104,12 @@
 			e.unwrap();
 		}
 
-		$("input").change(function() {
-			$("form").submit();
-			reset($('#file'))
+		$("#file").change(function() {
+			$("#uploadForm").submit();
+			reset($('#file'));
 		});
 
-		$("form").submit( function( e ) {
+		$("#uploadForm").submit( function( e ) {
 			$.ajax( {
 				url: '/add_image',
 				type: 'POST',
