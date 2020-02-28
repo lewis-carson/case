@@ -27,7 +27,7 @@
 		socket.on("thumb_list", function(msg) {
 			if (loaded == false) {
 				for (var i in msg) {
-					$(".columns").append($("<img>", {src: "thumbnails/" + msg[i]}));
+					$(".columns").prepend($("<img>", {src: "thumbnails/" + msg[i]}));
 				}
 				loaded = true;
 			}
@@ -54,8 +54,20 @@
 
 		$("input").change(function() {
 			$("form").submit();
+
 			reset($('#file'))
 		});
+
+	    $("form").submit( function( e ) {
+			$.ajax( {
+				url: '/add_image',
+				type: 'POST',
+				data: new FormData( this ),
+				processData: false,
+				contentType: false
+			} );
+			e.preventDefault();
+		})
 	</script>
 </body>
 </html>
