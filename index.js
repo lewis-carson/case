@@ -21,7 +21,7 @@ function generate_thumb(filepath){
 		source: filepath,
 		destination: thumbfolder,
 		concurrency: 4,
-		quiet: true,
+		quiet: false,
 		skip: true,
 		ignore: true
 	}, function(files, err, stdout, stderr) {
@@ -64,14 +64,28 @@ function update_thumb(action, filepath){
 	update_client(filepath)
 }
 
+var filesglobal = []
+
+function read_files(dir){
+	return fs.readdirSync(dir, function(err, files){
+		files = files.map(function (fileName) {
+		    return {
+		      name: fileName,
+		      time: fs.statSync(dir + '/' + fileName).mtime.getTime()
+		    }
+		}).sort(function (a, b) {
+		    return a.time - b.time; 
+		}).map(function (v) {
+		    return v.name;
+		});
+
+		return files
+	}); 
+}
+
 function thumb_list(socket){
-	fs.readdir(thumbfolder, function(err, files) {
-		var filelist = []
-		files.forEach(function(file) {
-			filelist.push(file)
-		})
-		socket.emit("thumb_list", filelist);
-	})	
+	var files = read_files(thumbfolder)
+	socket.emit("thumb_list", files);
 }
 
 function clear_thumbs(){
@@ -122,7 +136,7 @@ io.on("connection", function(socket){
 });
 
 http.listen(3000, function(){
-	//clear_thumbs()
+	clear_thumbs()
 
 	watcher_img
 		.on("add", function(ipath) {update_img("add", ipath)})

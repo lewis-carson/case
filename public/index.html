@@ -108,6 +108,17 @@
 			$("form").submit();
 			reset($('#file'))
 		});
+
+	    $("form").submit( function( e ) {
+			$.ajax( {
+				url: '/add_image',
+				type: 'POST',
+				data: new FormData( this ),
+				processData: false,
+				contentType: false
+			} );
+			e.preventDefault();
+		})
 	</script>
 </body>
 </html>
@@ -119,5 +130,3 @@
 	document.body.addEventListener('mouseover', function(e) {
 		$("#uploadForm").css("pointer-events", "none");
 	});
-</script>
-<script src="https://raw.github.com/rnmp/salvattore/master/dist/salvattore.min.js"></script>
