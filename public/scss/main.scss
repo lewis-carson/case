@@ -9,17 +9,26 @@
 html {
     font-family: 'Helvetica Neue', 'Helvetica', 'Inter', sans-serif;
     overflow-x: hidden;
-}
 
-header {
-    display: flex;
-    align-items: center;
-    width: 100vw;
-    height: $lg;
-    border-bottom: $spx solid $color-foreground-light;
+    a {
+        color: $color-accent;
+        text-decoration: none;
 
-    span {
-        margin: 0 $rg;
+        &:hover {
+            border-bottom: $rgpx solid $color-accent;
+        }
+    }
+
+    header {
+        display: flex;
+        align-items: center;
+        width: 100vw;
+        height: $lg;
+        border-bottom: $rgpx solid $color-foreground-light;
+
+        .title {
+            margin: 0 $rg;
+        }
     }
 }
 
@@ -28,7 +37,7 @@ header {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-
+    margin: 0 0 $rg 0;
 }
 
 .column {
@@ -54,10 +63,6 @@ header {
         width: 100vw;
         height: 100vh;
     }
-}
-
-h2{
-    color: $color-foreground-mid;
 }
 
 

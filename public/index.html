@@ -11,7 +11,7 @@
 	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 
 	<header>
-		<span>// case by lew & eti</span>
+		<span class="title"><span class="alight">//</span> case <span class="lolight">by</span> <a href="http://lew.digital">lew</a> <span class="lolight">&</span> <a href="https://eti.tf/links">eti</a></span>
 	</header>
 	
 
@@ -109,7 +109,7 @@
 			reset($('#file'))
 		});
 
-	    $("form").submit( function( e ) {
+		$("form").submit( function( e ) {
 			$.ajax( {
 				url: '/add_image',
 				type: 'POST',
@@ -130,3 +130,4 @@
 	document.body.addEventListener('mouseover', function(e) {
 		$("#uploadForm").css("pointer-events", "none");
 	});
+</script>

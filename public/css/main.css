@@ -3,15 +3,21 @@ html {
   font-family: "Helvetica Neue", "Helvetica", "Inter", sans-serif;
   overflow-x: hidden;
 }
-
-header {
+html a {
+  color: #bd2828;
+  text-decoration: none;
+}
+html a:hover {
+  border-bottom: 2px solid #bd2828;
+}
+html header {
   display: flex;
   align-items: center;
   width: 100vw;
   height: 2.5rem;
-  border-bottom: 1px solid #00000022;
+  border-bottom: 2px solid #00000022;
 }
-header span {
+html header .title {
   margin: 0 1rem;
 }
 
@@ -19,6 +25,7 @@ header span {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  margin: 0 0 1rem 0;
 }
 
 .column {
@@ -41,10 +48,6 @@ header span {
   opacity: 0;
   width: 100vw;
   height: 100vh;
-}
-
-h2 {
-  color: #00000030;
 }
 
 @media only screen and (max-width: 1300px) {
