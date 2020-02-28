@@ -84,7 +84,6 @@
 
 	var filehistory = []
 	socket.on("update_client", function(file) {
-		console.log(file)
 		if(!filehistory.includes(file)){
 			$("#3").prepend($("<img>", {src: "thumbnails/" + file}));
 			filehistory.push(file)

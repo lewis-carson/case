@@ -7,6 +7,7 @@ var path = require("path");
 var io = require('socket.io')(http);
 var multer  = require('multer')
 var upload = multer({ dest: 'cache/' })
+const httpr = require('http');
 
 const imgfolder = "public/img/"
 const thumbfolder = "public/thumbnails/"
@@ -120,20 +121,32 @@ app.post('/add_image', cpUpload, function (req, res, next) {
 	})
 })
 
+function endsWithAny(suffixes, string) {
+    return suffixes.some(function (suffix) {
+        return string.endsWith(suffix);
+    });
+}
+
 io.on("connection", function(socket){
-	io.on("connection", function(socket){
-		thumb_list(socket)
-		global_socket = socket;
+	thumb_list(socket)
+	global_socket = socket;
 
-		socket.on("add_image", function(){
-			console.log("new image");
-		});
-
-		socket.on("delete_image", function(){
-			console.log("new image");
-		});
+	socket.on("download_url", function(s){
+		if(endsWithAny([".jpg", ".jpeg", ".png"], s)){
+			console.log(s)
+			var file = fs.createWriteStream("cache/" + path.basename(s));
+			var request = httpr.get("http://" + s, function(response) {
+			  response.pipe(file);
+			  fs.rename("cache/" + path.basename(s), "public/img/" + path.basename(s), 
+				function (err) {
+					if (err) throw err
+				})
+			});
+			
+		}
 	});
 });
+
 
 http.listen(3000, function(){
 	clear_thumbs()
