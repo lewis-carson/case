@@ -105,6 +105,10 @@ app.get("/css/main.css", function(req, res){
 	res.sendFile(__dirname + "/public/css/main.css");
 });
 
+app.get("/js/upload.js", function(req, res){
+	res.sendFile(__dirname + "/public/js/upload.js");
+});
+
 app.get("/thumbnails/*", function(req, res){
 	res.sendFile(__dirname + "/public/" + req.path.replace("%20", " "));
 });

@@ -8,14 +8,10 @@
 	<link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css">
 	<link rel="stylesheet" href="/css/main.css">
 </head>
-<body>
+<body ondrop="onDrop(event)" ondragover="onDragOver(event)">
 	<header>
 		<span class="title"><span class="alight">//</span> case <span class="lolight">by</span> <a href="http://lew.digital">lew</a> <span class="lolight">&</span> <a href="https://eti.tf/links">eti</a></span>
 	</header>
-
-	<form id="uploadForm" class="upload" action="/add_image" method="post" enctype="multipart/form-data">
-		<input type="file" id="file" name="img" title=""/>
-	</form>
 
 	<div class="columns"></div>
 
@@ -86,8 +82,13 @@
 		location.reload();
 	})
 
+	col = 4;
 	socket.on("update_client", function(file) {
-		$(".columns").prepend($("<img>", {src: "thumbnails/" + file}));
+		$("#" + col).prepend($("<img>", {src: "thumbnails/" + file}));
+		col --;
+		if (col == 0) {
+			col = 4
+		}
 	})
 </script>
 <script src="/js/upload.js"></script>

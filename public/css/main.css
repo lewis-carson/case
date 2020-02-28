@@ -39,17 +39,17 @@ html header .title {
   width: 100%;
 }
 
-.upload {
-  pointer-events: none;
-  position: absolute;
-  z-index: 999;
-}
-.upload input {
-  opacity: 0;
-  width: 100vw;
-  height: 100vh;
-}
+/*.upload {
+    pointer-events: none;
+    position: absolute;
+    z-index: 999;
 
+    input {
+        opacity: 0;
+        width: 100vw;
+        height: 100vh;
+    }
+}*/
 @media only screen and (max-width: 1300px) {
   .column {
     flex: 100%;
