@@ -1,12 +1,26 @@
 //// imports
 @import "colors.scss";
 @import "sizes.scss";
+@import "https://rsms.me/inter/inter.css";
 
 
 
 //// main
-body {
+html {
+    font-family: 'Helvetica Neue', 'Helvetica', 'Inter', sans-serif;
     overflow-x: hidden;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    width: 100vw;
+    height: $lg;
+    border-bottom: $spx solid $color-foreground-light;
+
+    span {
+        margin: 0 $rg;
+    }
 }
 
 // create four equal columns that sits next to each other

@@ -1,5 +1,18 @@
-body {
+@import "https://rsms.me/inter/inter.css";
+html {
+  font-family: "Helvetica Neue", "Helvetica", "Inter", sans-serif;
   overflow-x: hidden;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  height: 2.5rem;
+  border-bottom: 1px solid #00000022;
+}
+header span {
+  margin: 0 1rem;
 }
 
 .columns {
