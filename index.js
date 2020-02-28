@@ -7,7 +7,7 @@ var path = require("path");
 var io = require('socket.io')(http);
 var multer  = require('multer')
 var upload = multer({ dest: 'cache/' })
-const httpr = require('http');
+const https = require('https');
 
 const imgfolder = "public/img/"
 const thumbfolder = "public/thumbnails/"
@@ -135,7 +135,8 @@ io.on("connection", function(socket){
 		if(endsWithAny([".jpg", ".jpeg", ".png"], s)){
 			console.log(s)
 			var file = fs.createWriteStream("cache/" + path.basename(s));
-			var request = httpr.get("http://" + s, function(response) {
+			if(!s.startsWith("http")){s = "https://" + s}
+			var request = https.get(s, function(response) {
 			  response.pipe(file);
 			  fs.rename("cache/" + path.basename(s), "public/img/" + path.basename(s), 
 				function (err) {
