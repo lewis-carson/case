@@ -92,7 +92,7 @@
 	});
 
 	socket.on("imgsize", function(size) {
-		$("#size").text("approx. " + size + " mb") 
+		$("#size").text("approx. " + Math.round(size) + " mb") 
 	});
 </script>
 <script src="/js/upload.js"></script>
