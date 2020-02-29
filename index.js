@@ -167,8 +167,11 @@ if (require.main === module) {
     var args = process.argv.slice(2);
 
     if (!args[1]) {args[1] = "./public/img/"}
-        if (args[1].endsWith("/")) {args[1] += "/"}
-            imgDir = args[1];
+        if (args[1].endsWith("/")) {
+            args[1] += "/";
+        }
+
+        imgDir = args[1];
 
         http.listen(args[0], function() {
             clear_thumbs();

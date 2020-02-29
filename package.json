@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm-run-all --parallel scss server",
-    "server": "node index.js 3000 ./public/img/",
+    "start": "npm-run-all --parallel case scss",
     "case": "node index.js",
     "scss": "sass --no-source-map --watch public/scss:public/css"
   },
