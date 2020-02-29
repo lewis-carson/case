@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "sass --no-source-map public/scss:public/css ; node index.js",
+    "start": "node index.js",
     "scss": "sass --no-source-map --watch public/scss:public/css"
   },
   "author": "lew, eti",

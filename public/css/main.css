@@ -24,6 +24,10 @@ html header {
   border-bottom: 2px solid #00000022;
 }
 
+html::-webkit-scrollbar {
+  display: none;
+}
+
 .columns {
   display: flex;
   justify-content: center;
