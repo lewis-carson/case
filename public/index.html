@@ -80,7 +80,7 @@
 
 	socket.on("remove_client", function(file) {
 		location.reload();
-	})
+	});
 
 	var filehistory = []
 	socket.on("update_client", function(file) {
@@ -88,7 +88,7 @@
 			$("#3").prepend($("<img>", {src: "thumbnails/" + file}));
 			filehistory.push(file)
 		}
-	})
+	});
 </script>
 <script src="/js/upload.js"></script>
 </body>

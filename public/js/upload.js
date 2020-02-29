@@ -18,6 +18,7 @@ function onDrop(event) {
     event.preventDefault();
     //Way 1: Use DataTransferItemList interface to access the file(s), if it's defined
     if (event.dataTransfer.items) {
+        console.log(event.dataTransfer.items)
         for (var i = 0; i < event.dataTransfer.items.length; i++) {
             // If dropped items aren't files, reject them
             if (event.dataTransfer.items[i].kind === 'file') {
@@ -42,7 +43,7 @@ function onDrop(event) {
         if(event.dataTransfer.items[0].kind == "string"){
                 var s = event.dataTransfer.getData("text/plain");
                 console.log(s)
-                socket.emit('download_url', s);
+                socket.emit('download_url', s.split("?")[0]);
         }
     }
     //Way 2: Use DataTransfer interface to access the file(s), if DataTransferItemList
