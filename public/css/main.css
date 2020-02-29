@@ -7,6 +7,9 @@ html {
   font-family: "Helvetica Neue", "Helvetica", "Inter", sans-serif;
   overflow-x: hidden;
 }
+html::-webkit-scrollbar {
+  display: none;
+}
 html a {
   color: #bd2828;
   text-decoration: none;
@@ -22,10 +25,6 @@ html header {
   width: 100vw;
   height: 2.5rem;
   border-bottom: 2px solid #00000022;
-}
-
-html::-webkit-scrollbar {
-  display: none;
 }
 
 .columns {
@@ -51,15 +50,15 @@ html::-webkit-scrollbar {
 }
 
 /*.upload {
-    pointer-events: none;
-    position: absolute;
-    z-index: 999;
+pointer-events: none;
+position: absolute;
+z-index: 999;
 
-    input {
-        opacity: 0;
-        width: 100vw;
-        height: 100vh;
-    }
+input {
+opacity: 0;
+width: 100vw;
+height: 100vh;
+}
 }*/
 @media only screen and (max-width: 1300px) {
   .column {
