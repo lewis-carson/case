@@ -127,7 +127,7 @@ function clear_thumbs() {
 }
 
 app.get("/*", function(req, res) {
-    res.sendFile(__dirname + "/public/" + req.path.replace("%20", " "));
+    res.sendFile(imgDir + req.path.split("/")[1].replace("%20", " "));
 });
 
 
