@@ -8,6 +8,7 @@ var io = require('socket.io')(http);
 var multer  = require('multer')
 var upload = multer({ dest: 'cache/' })
 const https = require('https');
+const imageThumbnail = require('image-thumbnail');
 
 const imgfolder = "public/img/"
 const thumbfolder = "public/thumbnails/"
@@ -17,19 +18,31 @@ var watcher_thumb = chokidar.watch(thumbfolder, {ignored: /^\./, persistent: tru
 
 var global_socket;
 
-function generate_thumb(filepath){
-	thumb({
-		source: filepath,
-		destination: thumbfolder,
-		concurrency: 4,
-		quiet: false,
-		skip: true,
-		ignore: true
-	}, function(files, err, stdout, stderr) {
-		if(files[0]){
-			console.log("[", files[0].srcPath, "] thumbnail generated")
+function generate_thumb(filepath, fileorurl){
+	if(fileorurl != "file"){
+		var thumbpath = thumbfolder + filepath.split("/").pop()
+	}else{
+		var thumbpath = thumbfolder + path.basename(filepath)
+	}
+
+	if(fileorurl != "file"){
+		if(!filepath.startsWith("http")){
+			filepath = "https://" + filepath
 		}
-	});
+		filepath = {uri: filepath.toString()}
+	}
+
+	imageThumbnail(filepath, {width: 400})
+	    .then(thumbnail => {
+	    	fs.writeFile(thumbpath, thumbnail, function(err) {
+			    if(err) {
+			        return console.log(err);
+			    }
+			    console.log("generated", thumbpath)
+			}); 
+	    })
+	    .catch(err => console.error(err));
+
 }
 
 function delete_thumb(filepath){
@@ -54,7 +67,7 @@ function remove_client(filepath){
 
 function update_img(action, filepath){
 	if(action == "add"){
-		generate_thumb(filepath)
+		generate_thumb(filepath, "file")
 	}else if (action == "delete"){
 		delete_thumb(filepath)
 		remove_client(filepath)
@@ -133,17 +146,7 @@ io.on("connection", function(socket){
 
 	socket.on("download_url", function(s){
 		if(endsWithAny([".jpg", ".jpeg", ".png"], s)){
-			console.log(s)
-			var file = fs.createWriteStream("cache/" + path.basename(s));
-			if(!s.startsWith("http")){s = "https://" + s}
-			var request = https.get(s, function(response) {
-			  response.pipe(file);
-			  fs.rename("cache/" + path.basename(s), "public/img/" + path.basename(s), 
-				function (err) {
-					if (err) throw err
-				})
-			});
-			
+			generate_thumb(s, "url")
 		}
 	});
 });
