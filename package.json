@@ -6,6 +6,7 @@
   "scripts": {
     "start": "npm-run-all --parallel scss server",
     "server": "node index.js 3000 ./public/img/",
+    "case": "node index.js",
     "scss": "sass --no-source-map --watch public/scss:public/css"
   },
   "author": "lew, eti",
