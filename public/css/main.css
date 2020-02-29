@@ -1,4 +1,8 @@
 @import "https://rsms.me/inter/inter.css";
+* {
+  box-sizing: border-box;
+}
+
 html {
   font-family: "Helvetica Neue", "Helvetica", "Inter", sans-serif;
   overflow-x: hidden;
@@ -12,13 +16,12 @@ html a:hover {
 }
 html header {
   display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
   align-items: center;
   width: 100vw;
   height: 2.5rem;
   border-bottom: 2px solid #00000022;
-}
-html header .title {
-  margin: 0 1rem;
 }
 
 .columns {
@@ -29,6 +32,7 @@ html header .title {
 }
 
 .column {
+  box-sizing: initial;
   flex: 22.5%;
   max-width: 22.5%;
   padding: 0 0.5rem;

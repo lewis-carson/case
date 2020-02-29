@@ -6,6 +6,10 @@
 
 
 //// main
+* {
+    box-sizing: border-box;
+}
+
 html {
     font-family: 'Helvetica Neue', 'Helvetica', 'Inter', sans-serif;
     overflow-x: hidden;
@@ -21,14 +25,12 @@ html {
 
     header {
         display: flex;
+        justify-content: space-between;
+        padding: 0 $rg;
         align-items: center;
         width: 100vw;
         height: $lg;
         border-bottom: $rgpx solid $color-foreground-light;
-
-        .title {
-            margin: 0 $rg;
-        }
     }
 }
 
@@ -41,6 +43,7 @@ html {
 }
 
 .column {
+    box-sizing: initial;
     flex: 22.5%;
     max-width: 22.5%;
     padding: 0 $s;
