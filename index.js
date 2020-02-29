@@ -166,6 +166,9 @@ io.on("connection", function(socket){
 
 if (require.main === module) {
 	var args = process.argv.slice(2);
+
+	if(!args[1]){args[1] = "./public/img/"}
+	if(args[1].endsWith("/")){args[1] += "/"}
 	imgfolder = args[1];
 
 	http.listen(args[0], function(){
