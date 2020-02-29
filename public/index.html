@@ -70,7 +70,7 @@
 
 				for (var img in cols[col]) {
 					if (cols[col][img] != undefined) {
-						$("#" + col).append($("<img>", {src: "thumbnails/" + cols[col][img]}));
+						$("#" + col).append($("<img>", {src: "/img/thumbnails/" + cols[col][img]}));
 					}
 				}
 			}
@@ -86,7 +86,7 @@
 	var filehistory = []
 	socket.on("update_client", function(file) {
 		if(!filehistory.includes(file)){
-			$("#3").prepend($("<img>", {src: "thumbnails/" + file, class: "new_img"}));
+			$("#3").prepend($("<img>", {src: "/img/thumbnails/" + file, class: "new_img"}));
 			fadein($("#3").children(":first"))
 			filehistory.push(file)
 		}
