@@ -2,13 +2,13 @@ var app = require("express")();
 var http = require("http").createServer(app);
 var chokidar = require("chokidar");
 const fs = require("fs");
-var thumb = require("node-thumbnail").thumb;
 var path = require("path");
 var io = require('socket.io')(http);
 var multer  = require('multer')
 var upload = multer({ dest: 'cache/' })
 const https = require('https');
 const imageThumbnail = require('image-thumbnail');
+const getSize = require('get-folder-size');
 
 const imgfolder = "public/img/"
 const thumbfolder = "public/thumbnails/"
@@ -17,6 +17,16 @@ var watcher_img = chokidar.watch(imgfolder, {ignored: /^\./, persistent: true});
 var watcher_thumb = chokidar.watch(thumbfolder, {ignored: /^\./, persistent: true});
 
 var global_socket;
+
+function getimgsize(){
+	var size = 0
+	getSize(imgfolder, (err, size) => {
+		if (err) { throw err; }
+		size = (size / 1024 / 1024).toFixed(2)
+		if(global_socket){global_socket.emit("imgsize", size)}
+	});
+
+}
 
 function generate_thumb(filepath, fileorurl){
 	if(fileorurl != "file"){
@@ -72,6 +82,7 @@ function update_img(action, filepath){
 		delete_thumb(filepath)
 		remove_client(filepath)
 	}
+	getimgsize()
 }
 
 var filesglobal = []
@@ -143,6 +154,7 @@ function endsWithAny(suffixes, string) {
 io.on("connection", function(socket){
 	thumb_list(socket)
 	global_socket = socket;
+	getimgsize();
 
 	socket.on("download_url", function(s){
 		if(endsWithAny([".jpg", ".jpeg", ".png"], s)){

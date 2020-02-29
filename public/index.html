@@ -11,6 +11,7 @@
 <body ondrop="onDrop(event)" ondragover="onDragOver(event)">
 	<header>
 		<span class="title"><span class="alight">//</span> case <span class="lolight">by</span> <a href="http://lew.digital">lew</a> <span class="lolight">&</span> <a href="https://eti.tf/links">eti</a></span>
+		<span id="size"></span>
 	</header>
 
 	<div class="columns"></div>
@@ -88,6 +89,10 @@
 			$("#3").prepend($("<img>", {src: "thumbnails/" + file}));
 			filehistory.push(file)
 		}
+	});
+
+	socket.on("imgsize", function(size) {
+		$("#size").text("approx. " + size + " mb") 
 	});
 </script>
 <script src="/js/upload.js"></script>
