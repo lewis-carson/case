@@ -10,7 +10,7 @@ const https = require('https');
 const imageThumbnail = require('image-thumbnail');
 const getSize = require('get-folder-size');
 
-const imgfolder = "public/img/"
+var imgfolder = "public/img/"
 const thumbfolder = "public/thumbnails/"
 
 var watcher_img = chokidar.watch(imgfolder, {ignored: /^\./, persistent: true});
@@ -139,7 +139,7 @@ app.post('/add_image', cpUpload, function (req, res, next) {
 	var original = req.files.img[0].originalname
 	var filename = req.files.img[0].filename
 
-	fs.rename("cache/" + filename, "public/img/" + original, function (err) {
+	fs.rename("cache/" + filename, imgfolder + original, function (err) {
 		if (err) throw err
 		res.redirect("back");
 	})
@@ -164,16 +164,21 @@ io.on("connection", function(socket){
 });
 
 
-http.listen(3000, function(){
-	clear_thumbs()
+if (require.main === module) {
+	var args = process.argv.slice(2);
+	imgfolder = args[1];
 
-	watcher_img
-		.on("add", function(ipath) {update_img("add", ipath)})
-		.on("change", function(ipath) {update_img("change", ipath)})
-		.on("unlink", function(ipath) {update_img("delete", ipath)})
+	http.listen(args[0], function(){
+		clear_thumbs()
 
-	watcher_thumb
-		.on("add", function(ipath) {update_client(ipath)})
-		.on("change", function(ipath) {update_client(ipath)})
-		.on("unlink", function(ipath) {update_client(ipath)})
-});
+		watcher_img
+			.on("add", function(ipath) {update_img("add", ipath)})
+			.on("change", function(ipath) {update_img("change", ipath)})
+			.on("unlink", function(ipath) {update_img("delete", ipath)})
+
+		watcher_thumb
+			.on("add", function(ipath) {update_client(ipath)})
+			.on("change", function(ipath) {update_client(ipath)})
+			.on("unlink", function(ipath) {update_client(ipath)})
+	});
+}
