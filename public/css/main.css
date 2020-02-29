@@ -38,6 +38,9 @@ html header .title {
   vertical-align: middle;
   width: 100%;
 }
+.column .new_img {
+  opacity: 0;
+}
 
 /*.upload {
     pointer-events: none;
