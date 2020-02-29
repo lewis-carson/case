@@ -54,3 +54,10 @@ function onDrop(event) {
     }
   }
 }
+
+$("body").bind('paste', function(e) {
+    navigator.clipboard.readText()
+    .then(text => {
+        socket.emit('download_url', text.split("?")[0]);
+    })
+}); 
