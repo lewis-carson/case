@@ -137,9 +137,9 @@ app.get("/*", function(req, res) {
 });
 
 
-app.post('/add_image', cpUpload, function (req, res, next) {
-    var original = req.files.img[0].originalName;
-    var fileName = req.files.img[0].fileName;
+app.post('/addImage', cpUpload, function (req, res, next) {
+    var original = req.files.img[0].originalname;
+    var fileName = req.files.img[0].filename;
 
     fs.rename("cache/" + fileName, imgDir + original, function (err) {
         if (err) {
@@ -161,7 +161,7 @@ io.on("connection", function(socket) {
     globalSocket = socket;
     getImgSize();
 
-    socket.on("download_url", function(s) {
+    socket.on("downloadUrl", function(s) {
         if (endsWithAny([".jpg", ".jpeg", ".png"], s)) {
             generateThumb(s, "url");
         }

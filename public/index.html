@@ -59,7 +59,7 @@
 	var socket = io();
 	var loaded = false;
 
-	socket.on("thumb_list", function(msg) {
+	socket.on("thumbList", function(msg) {
 		if (loaded == false) {
 			var cols = chunkify(msg, 4, true)
 
@@ -79,12 +79,12 @@
 		}
 	});
 
-	socket.on("remove_client", function(file) {
+	socket.on("removeClient", function(file) {
 		location.reload();
 	});
 
 	var filehistory = []
-	socket.on("update_client", function(file) {
+	socket.on("updateClient", function(file) {
 		if(!filehistory.includes(file)){
 			$("#3").prepend($("<img>", {src: "thumbnails/" + file, class: "new_img"}));
 			fadein($("#3").children(":first"))
@@ -92,7 +92,7 @@
 		}
 	});
 
-	socket.on("imgsize", function(size) {
+	socket.on("imgSize", function(size) {
 		$("#size").text("approx. " + Math.round(size) + " mb") 
 	});
 

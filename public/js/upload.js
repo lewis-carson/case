@@ -29,7 +29,7 @@ function onDrop(event) {
                 data.append("img", file);
 
                 jQuery.ajax({
-                    url: '/add_image',
+                    url: '/addImage',
                     data: data,
                     cache: false,
                     contentType: false,
@@ -44,14 +44,14 @@ function onDrop(event) {
         if (event.dataTransfer.items[0].kind == "string") {
                 var s = event.dataTransfer.getData("text/plain");
                 console.log(s);
-                socket.emit('download_url', s.split("?")[0]);
+                socket.emit('downloadUrl', s.split("?")[0]);
         }
     }
     //Way 2: Use DataTransfer interface to access the file(s), if DataTransferItemList
     //interface is undefined
     else {
         for (var i = 0; i < event.dataTransfer.files.length; i++) {
-            console.log('... file[' + i + '].name = ' + event.dataTransfer.files[i].name);
+            console.log("... file[" + i + "].name = " + event.dataTransfer.files[i].name);
     }
   }
 }
@@ -59,6 +59,6 @@ function onDrop(event) {
 $("body").bind('paste', function(e) {
     navigator.clipboard.readText()
     .then(text => {
-        socket.emit('download_url', text.split("?")[0]);
+        socket.emit('downloadUrl', text.split("?")[0]);
     })
 }); 
