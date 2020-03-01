@@ -2,6 +2,7 @@ public/img/*
 public/thumbnails/*
 !public/img/.placeholder
 !public/thumbnails/.placeholder
+cache
 
 # Created by https://www.gitignore.io/api/node,linux,macos
 # Edit at https://www.gitignore.io/?templates=node,linux,macos
