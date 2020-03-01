@@ -13,7 +13,7 @@ const getSize = require('get-folder-size');
 const imageThumbnail = require('image-thumbnail');
 
 var imgDir = "public/img/";
-var thumbDir =  imgDir + "thumbnails/";
+var thumbDir =  "./public/thumbnails/";
 var watcherImg = chokidar.watch(imgDir, {ignored: /^\./, persistent: true});
 var watcherThumb = chokidar.watch(thumbDir, {ignored: /^\./, persistent: true});
 var cpUpload = upload.fields([{ name: 'img', maxCount: 100 }])
