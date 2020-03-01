@@ -74,7 +74,7 @@ function generateThumb(filePath, fileOrUrl) {
 function deleteThumb(filePath) {
     var base = path.basename(filePath).replace(/\.[^/.]+$/, "");
     var ext = path.extname(path.basename(filePath));
-    fs.unlinkSync(thumbDir + base + "_thumb" + ext);
+    fs.unlinkSync(thumbDir + base + ext);
 }
 
 function updateClient(filePath) {
