@@ -1,22 +1,22 @@
 #!/usr/bin/env node
-var global_socket;
+var globalSocket;
 var app = require("express")();
 var http = require("http").createServer(app);
 var chokidar = require("chokidar");
 var path = require("path");
-var io = require('socket.io')(http);
-var multer  = require('multer');
+var io = require("socket.io")(http);
+var multer  = require("multer");
 var upload = multer({ dest: 'cache/' });
 const ext = ["ase","art","bmp","blp","cd5","cit","cpt","cr2","cut","dds","dib","djvu","egt","exif","gif","gpl","grf","icns","ico","iff","jng","jpeg","jpg","jfif","jp2","jps","lbm","max","miff","mng","msp","nitf","ota","pbm","pc1","pc2","pc3","pcf","pcx","pdn","pgm","PI1","PI2","PI3","pict","pct","pnm","pns","ppm","psb","psd","pdd","psp","px","pxm","pxr","qfx","raw","rle","sct","sgi","rgb","int","bw","tga","tiff","tif","vtf","xbm","xcf","xpm","3dv","amf","ai","awg","cgm","cdr","cmx","dxf","e2d","egt","eps","fs","gbr","odg","svg","stl","vrml","x3d","sxd","v2d","vnd","wmf","emf","art","xar","png","webp","jxr","hdp","wdp","cur","ecw","iff","lbm","liff","nrrd","pam","pcx","pgf","sgi","rgb","rgba","bw","int","inta","sid","ras","sun","tga"]
 
 const fs = require("fs");
-const https = require('https');
-const getSize = require('get-folder-size');
-const imageThumbnail = require('image-thumbnail');
+const https = require("https");
+const getSize = require("get-folder-size");
+const imageThumbnail = require("image-thumbnail");
 
 var imgDir = __dirname + "/public/img/";
 var thumbDir =  __dirname + "/public/thumbnails/";
-var watcherThumb = chokidar.watch(thumbDir, {ignored: /^\./, persistent: true});
+var watcherThumb = chokidar.watch(thumbDir, { ignored: /^\./, persistent: true });
 var cpUpload = upload.fields([{ name: 'img', maxCount: 100 }])
 
 function endsWithAny(suffixes, string) {
@@ -25,7 +25,7 @@ function endsWithAny(suffixes, string) {
     });
 }
 
-function getimgsize() {
+function getImgSize() {
     getSize(imgDir, (err, size) => {
         if (err) {
             throw err;
@@ -33,37 +33,37 @@ function getimgsize() {
 
         size = (size / 1024 / 1024).toFixed(2);
 
-        if (global_socket) {
-            global_socket.emit("imgsize", size);
+        if (globalSocket) {
+            globalSocket.emit("imgsize", size);
         }
     });
 }
 
-function generate_thumb(filepath, fileorurl) {
-    if (fileorurl != "file") {
-        var thumbpath = thumbDir + filepath.split("/").pop();
+function generateThumb(filePath, fileOrUrl) {
+    if (fileOrUrl != "file") {
+        var thumbPath = thumbDir + filePath.split("/").pop();
     } else {
-        var thumbpath = thumbDir + path.basename(filepath);
+        var thumbPath = thumbDir + path.basename(filePath);
     }
 
-    if (fileorurl != "file") {
-        if (!filepath.startsWith("http")) {
-            filepath = "https://" + filepath;
+    if (fileOrUrl != "file") {
+        if (!filePath.startsWith("http")) {
+            filePath = "https://" + filePath;
         }
 
-        filepath = {
-            uri: filepath.toString()
+        filePath = {
+            uri: filePath.toString()
         }
     }
 
-    if(endsWithAny(ext, filepath)){
-	    imageThumbnail(filepath, { width: 400 }).then(thumbnail => {
-	        fs.writeFile(thumbpath, thumbnail, function(err) {
+    if(endsWithAny(ext, filePath)){
+	    imageThumbnail(filePath, { width: 400 }).then(thumbnail => {
+	        fs.writeFile(thumbPath, thumbnail, function(err) {
 	            if (err) {
 	                return console.log(err);
 	            }
 
-	            console.log("generated", thumbpath);
+	            console.log("generated", thumbPath);
 	        }); 
 	    }).catch(err => console.error(err));
     }
@@ -71,40 +71,38 @@ function generate_thumb(filepath, fileorurl) {
     
 }
 
-function delete_thumb(filepath) {
-    var base = path.basename(filepath).replace(/\.[^/.]+$/, "");
-    var ext = path.extname(path.basename(filepath));
+function deleteThumb(filePath) {
+    var base = path.basename(filePath).replace(/\.[^/.]+$/, "");
+    var ext = path.extname(path.basename(filePath));
     fs.unlinkSync(thumbDir + base + "_thumb" + ext);
 }
 
-function update_client(filepath) {
-    if (global_socket) {
-        var base = path.basename(filepath);
-        global_socket.emit("update_client", base);
+function updateClient(filePath) {
+    if (globalSocket) {
+        var base = path.basename(filePath);
+        globalSocket.emit("updateClient", base);
     }
 }
 
-function remove_client(filepath) {
-    if (global_socket) {
-        var base = path.basename(filepath);
-        global_socket.emit('remove_client', base);
+function removeClient(filePath) {
+    if (globalSocket) {
+        var base = path.basename(filePath);
+        globalSocket.emit('removeClient', base);
     }
 }
 
-function update_img(action, filepath) {
+function updateImg(action, filePath) {
     if (action == "add") {
-        generate_thumb(filepath, "file");
+        generateThumb(filePath, "file");
     } else if (action == "delete") {
-        delete_thumb(filepath);
-        remove_client(filepath);
+        deleteThumb(filePath);
+        removeClient(filePath);
     }
 
-    getimgsize();
+    getImgSize();
 }
 
-var filesglobal = [];
-
-function read_files(dir) {
+function readFiles(dir) {
     return fs.readdirSync(dir, function(err, files) {
         files = files.map(function (fileName) {
             return {
@@ -121,9 +119,9 @@ function read_files(dir) {
     }); 
 }
 
-function thumb_list(socket) {
-    files = read_files(thumbDir);
-    socket.emit("thumb_list", files);
+function thumbList(socket) {
+    files = readFiles(thumbDir);
+    socket.emit("thumbList", files);
 }
 
 function clear_thumbs() {
@@ -140,10 +138,10 @@ app.get("/*", function(req, res) {
 
 
 app.post('/add_image', cpUpload, function (req, res, next) {
-    var original = req.files.img[0].originalname;
-    var filename = req.files.img[0].filename;
+    var original = req.files.img[0].originalName;
+    var fileName = req.files.img[0].fileName;
 
-    fs.rename("cache/" + filename, imgDir + original, function (err) {
+    fs.rename("cache/" + fileName, imgDir + original, function (err) {
         if (err) {
             throw err;
         }
@@ -159,13 +157,13 @@ function endsWithAny(suffixes, string) {
 }
 
 io.on("connection", function(socket) {
-    thumb_list(socket);
-    global_socket = socket;
-    getimgsize();
+    thumbList(socket);
+    globalSocket = socket;
+    getImgSize();
 
     socket.on("download_url", function(s) {
         if (endsWithAny([".jpg", ".jpeg", ".png"], s)) {
-            generate_thumb(s, "url");
+            generateThumb(s, "url");
         }
     });
 });
@@ -184,24 +182,24 @@ if (require.main === module) {
 
         watcherImg
         .on("add", function(ipath) {
-            update_img("add", ipath);
+            updateImg("add", ipath);
         })
         .on("change", function(ipath) {
-            update_img("change", ipath);
+            updateImg("change", ipath);
         })
         .on("unlink", function(ipath) {
-            update_img("delete", ipath);
+            updateImg("delete", ipath);
         })
 
         watcherThumb
         .on("add", function(ipath) {
-            update_client(ipath)
+            updateClient(ipath)
         })
         .on("change", function(ipath) {
-            update_client(ipath)
+            updateClient(ipath)
         })
         .on("unlink", function(ipath) {
-            update_client(ipath)
+            updateClient(ipath)
         })
     });
 }
