@@ -67,8 +67,6 @@ function generateThumb(filePath, fileOrUrl) {
 	        }); 
 	    }).catch(err => console.error(err));
     }
-
-    
 }
 
 function deleteThumb(filePath) {
