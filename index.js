@@ -167,11 +167,10 @@ if (require.main === module) {
     var args = process.argv.slice(2);
 
 	if(args[0]){
-		args[0] = args[0].strip(" ")
 		if (!args[0].endsWith("/")) {
         	args[0] += "/";
     	}
-    	imgDir = __dirname + args[0];
+    	imgDir = __dirname + "/" + args[0];
 	}
 
     http.listen(3000, function() {
