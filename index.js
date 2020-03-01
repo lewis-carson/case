@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 var global_socket;
 var app = require("express")();
 var http = require("http").createServer(app);
