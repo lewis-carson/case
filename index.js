@@ -12,8 +12,8 @@ const https = require('https');
 const getSize = require('get-folder-size');
 const imageThumbnail = require('image-thumbnail');
 
-var imgDir = "public/img/";
-var thumbDir =  "./public/thumbnails/";
+var imgDir = __dirname + "/public/img/";
+var thumbDir =  __dirname + "/public/thumbnails/";
 var watcherImg = chokidar.watch(imgDir, {ignored: /^\./, persistent: true});
 var watcherThumb = chokidar.watch(thumbDir, {ignored: /^\./, persistent: true});
 var cpUpload = upload.fields([{ name: 'img', maxCount: 100 }])
@@ -127,7 +127,7 @@ function clear_thumbs() {
 }
 
 app.get("/*", function(req, res) {
-    res.sendFile(imgDir + req.path.split("/")[1].replace("%20", " "));
+    res.sendFile(__dirname + "/public/" + req.path.replace("%20", " "));
 });
 
 
@@ -166,36 +166,37 @@ io.on("connection", function(socket) {
 if (require.main === module) {
     var args = process.argv.slice(2);
 
-    if (!args[1]) {args[1] = "./public/img/"}
-        if (args[1].endsWith("/")) {
-            args[1] += "/";
-        }
+	if(args[0]){
+		args[0] = args[0].strip(" ")
+		if (!args[0].endsWith("/")) {
+        	args[0] += "/";
+    	}
+    	imgDir = __dirname + args[0];
+	}
 
-        imgDir = args[1];
+    http.listen(3000, function() {
+        clear_thumbs();
 
-        http.listen(args[0], function() {
-            clear_thumbs();
+        watcherImg
+        .on("add", function(ipath) {
+            update_img("add", ipath);
+        })
+        .on("change", function(ipath) {
+            update_img("change", ipath);
+        })
+        .on("unlink", function(ipath) {
+            update_img("delete", ipath);
+        })
 
-            watcherImg
-            .on("add", function(ipath) {
-                update_img("add", ipath);
-            })
-            .on("change", function(ipath) {
-                update_img("change", ipath);
-            })
-            .on("unlink", function(ipath) {
-                update_img("delete", ipath);
-            })
-
-            watcherThumb
-            .on("add", function(ipath) {
-                update_client(ipath)
-            })
-            .on("change", function(ipath) {
-                update_client(ipath)
-            })
-            .on("unlink", function(ipath) {
-                update_client(ipath)
-            })
-        });
-    }
+        watcherThumb
+        .on("add", function(ipath) {
+            update_client(ipath)
+        })
+        .on("change", function(ipath) {
+            update_client(ipath)
+        })
+        .on("unlink", function(ipath) {
+            update_client(ipath)
+        })
+    });
+}
