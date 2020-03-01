@@ -8,7 +8,7 @@
     "scss": "sass --no-source-map --watch public/scss:public/css"
   },
   "bin": {
-    "case": "index.js"
+    "showcase": "index.js"
   },
   "author": "lew, eti",
   "license": "ISC",
