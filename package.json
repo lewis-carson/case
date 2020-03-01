@@ -1,10 +1,11 @@
 {
-  "name": "case",
+  "name": "showcase",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm-run-all --parallel case scss",
+    "start": "npm-run-all --parallel showcase scss",
+    "showcase": "node index.js",
     "scss": "sass --no-source-map --watch public/scss:public/css"
   },
   "bin": {
