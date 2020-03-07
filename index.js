@@ -125,7 +125,9 @@ function thumbList(socket) {
 function clear_thumbs() {
     fs.readdir(thumbDir, function(err, files) {
         files.forEach(function(file) {
-            fs.unlinkSync(thumbDir + file);
+            if(file != ".placeholder"){
+                fs.unlinkSync(thumbDir + file);
+            }
         });
     });
 }
