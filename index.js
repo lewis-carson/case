@@ -34,7 +34,7 @@ function getImgSize() {
         size = (size / 1024 / 1024).toFixed(2);
 
         if (globalSocket) {
-            globalSocket.emit("imgsize", size);
+            globalSocket.emit("imgSize", size);
         }
     });
 }
